@@ -1,0 +1,100 @@
+{
+	"folders": [
+		{
+			"path": "Source/GameSDK",
+			"name": "MisCord-Helper"
+		}
+	],
+	"settings": {
+		"licenser.projectName": "Miscord-Helper",
+		"licenser.author": "MisModding",
+		"licenser.license": "GPLv3",
+		"Lua.runtime.version": "Lua 5.1",
+		"Lua.workspace.library": [
+			"../../.lua.compleations.d"
+		],
+		"Lua.diagnostics.workspaceDelay": 50,
+		"Lua.workspace.ignoreDir": [
+			".vscode",
+		],
+		"Lua.diagnostics.disable": [
+			"lowercase-global"
+		],
+		"vscode-lua-format.configPath": "../../lua-format-style.cfg",
+		"todo-tree.general.tags": [
+			"BUG",
+			"HACK",
+			"FIXME",
+			"CHANGEME",
+			"TODO",
+			"XXX",
+			"INFO",
+			"NOTE"
+		],
+		"todo-tree.regex.regex": "((---|//|#|<!--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
+		"todo-tree.highlights.customHighlight": {
+			"TODO": {
+				"icon": "check",
+				"type": "line",
+			},
+			"FIXME": {
+				"iconColour": "yellow",
+				"gutterIcon": true
+			},
+			"NOTE": {
+				"icon": "question",
+				"iconColour": "blue",
+			}
+		},
+		"better-comments.tags": [
+			{
+				"tag": "!",
+				"color": "#FF2D00",
+				"strikethrough": false,
+				"backgroundColor": "transparent"
+			},
+			{
+				"tag": "?",
+				"color": "#3498DB",
+				"strikethrough": false,
+				"backgroundColor": "transparent"
+			},
+			{
+				"tag": "//",
+				"color": "#474747",
+				"strikethrough": true,
+				"backgroundColor": "transparent"
+			},
+			{
+				"tag": "todo",
+				"color": "#FF8C00",
+				"strikethrough": false,
+				"backgroundColor": "transparent"
+			},
+			{
+				"tag": ">>",
+				"color": "#aeaeae",
+				"strikethrough": false,
+				"backgroundColor": "transparent"
+			},
+			{
+				"tag": "*",
+				"color": "#98C379",
+				"strikethrough": false,
+				"backgroundColor": "transparent"
+			}
+		],
+	},
+	"extensions": {
+		// Extensions Recommended for Best Development Experience
+		"recommendations": [
+			"sumneko.lua",
+			"usernamehw.errorlens",
+			"karyfoundation.comment",
+			"aaron-bond.better-comments",
+			"tomblind.local-lua-debugger-vscode",
+			"Gruntfuggly.todo-tree",
+			"koihik.vscode-lua-format"
+		]
+	},
+}
