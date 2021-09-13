@@ -67,7 +67,7 @@ Logger = g_MisCordHelper.Logger
 
 ---@param self MisCord-Helper
 local function createDefaultFiles(self)
-    Logger.Log(__FUNC__(), 'MisCordHelper - Checking Files......')
+    Logger.Log(__FUNC__(), 'Checking Files......')
     if (not FS.isDir('./MisCord-Helper')) then FS.mkDir('./MisCord-Helper') end
     for i, file in ipairs(self.DEFAULT_FILES) do
         if (not FS.isFile(file.file_path)) then
@@ -79,7 +79,7 @@ end
 
 ---@param self MisCord-Helper
 local function loadConfig(self)
-    Logger.Log(__FUNC__(), 'MisCordHelper - Loading Config......')
+    Logger.Log(__FUNC__(), 'Loading Config......')
     -- load existing Settings from PersistantStorage
     local config_from_persistantstorage = (self.PersistantStorage.Settings:GetPage('MisCordHelper_Config') or {})
 
@@ -93,7 +93,7 @@ local function loadConfig(self)
 end
 
 local function initServerLifetimeCounter(self)
-    Logger.Log(__FUNC__(), 'MisCordHelper - Initialising ServerLifeTime Counter......')
+    Logger.Log(__FUNC__(), 'Initialising ServerLifeTime Counter......')
     local Timer = require 'MisCordHelper.Classes.Timer'
     local ServerCounterData = self.PersistantStorage.Settings:GetPage('ServerLifetime')
     if (not ServerCounterData) then
@@ -106,7 +106,7 @@ end
 
 ---@param self MisCord-Helper
 local function initialiseHTTPServer(self)
-    Logger.Log(__FUNC__(), 'MisCordHelper - Initialising HTTPServer......')
+    Logger.Log(__FUNC__(), 'Initialising HTTPServer......')
     Script.ReloadScript('MisCordHelper/HTTPServer.lua')
     local HTTP_SERVER = require 'MisCordHelper.HTTPServer'
     self.HTTPServer = HTTP_SERVER
@@ -116,13 +116,13 @@ local function initialiseHTTPServer(self)
     table.each(routes_list,function(route)
         routes_str = routes_str .. string.format('[ %s ]\n',route)
     end)
-    Logger.Log(__FUNC__(), string.format('MisCordHelper - Registered  HTTPServer Routes: \n%s', routes_str))
+    Logger.Log(__FUNC__(), string.format('Registered  HTTPServer Routes: \n%s', routes_str))
     self.HTTPServer:use()
 end
 
 ---@param self MisCord-Helper
 local function loadAdminTools(self)
-    Logger.Log(__FUNC__(), 'MisCordHelper - Loading AdminTools......')
+    Logger.Log(__FUNC__(), 'Loading AdminTools......')
     Script.ReloadScript('MisCordHelper/LogKeeper.lua')
     Script.ReloadScript('MisCordHelper/AdminTools.lua')
     local AdminTools = require 'MisCordHelper.AdminTools'
@@ -130,7 +130,7 @@ local function loadAdminTools(self)
 end
 
 function g_MisCordHelper:init()
-    Logger.Log(__FUNC__(), 'MisCordHelper - Starting....')
+    Logger.Log(__FUNC__(), 'Starting....')
     createDefaultFiles(self)
     loadConfig(self)
     initServerLifetimeCounter(self)
@@ -138,4 +138,4 @@ function g_MisCordHelper:init()
     initialiseHTTPServer(self)
 end
 
-function g_MisCordHelper:start() Logger.Log(__FUNC__(), 'MisCordHelper - Running......') end
+function g_MisCordHelper:start() Logger.Log(__FUNC__(), 'Running......') end
