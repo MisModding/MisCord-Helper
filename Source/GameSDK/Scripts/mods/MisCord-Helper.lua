@@ -38,8 +38,8 @@ g_MisCordHelper.Logger = CreateSimpleLogger("MisCordHelper", './MisCordHelper.lo
 ---NOTE Storing Main Methods in MisCord-Helper/main.lua to keep stuff clean
 Script.ReloadScript('MisCordHelper/main.lua')
 
--- Handle Initialisation in OnInitPreloaded GameEvent
-RegisterCallback(_G, 'OnInitPreloaded', nil, function()
+-- Handle Initialisation in OnInitPreLoaded GameEvent
+RegisterCallback(_G, 'OnInitPreLoaded', nil, function()
     if (g_MisCordHelper['init']) then
         -- Initialise MisCord-Helper
         g_MisCordHelper:init()
