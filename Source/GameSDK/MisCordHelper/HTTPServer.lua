@@ -17,7 +17,6 @@
 local router = require 'MisCordHelper.Modules.Router'
 local JSON = require 'MisCordHelper.Modules.JSON'
 
-
 -- | template http status codes.
 local HTTPCODE = {
     [100] = 'CONTINUE',
@@ -85,27 +84,24 @@ function HTTP:use()
             local response = {status = 404, result = getHTTPCode(404), message = 'Failed to Handle Request'}
             return string.expand('${response}', {response = JSON.stringify(response)})
         end
-    else
-        RegisterCallbackReturnAware(_G, 'GetHTTPURLAction', nil, function(_, ret, url, client, connection)
-            local Router = _Router
-            --- request handled by router?
-            local handled ---@type boolean
-            -- request handler status
-            local status ---@type string|number
-            --- data sent back to the client, must be a string
-            local result ---@type string
-            handled, status, result = Router:Handle(url, client, connection)
-            if handled and status then
-                local response = {status = (status or 100), result = result, message = getHTTPCode(status or 100)}
-                return string.expand('${response}', {response = JSON.stringify(response)})
-
-            else
-                local response = {status = 500, result = getHTTPCode(500), message = 'Failed to Handle Request'}
-                return string.expand('${response}', {response = JSON.stringify(response)})
-            end
-            return ret
-        end)
     end
+    RegisterCallbackReturnAware(_G, 'GetHTTPURLAction', nil, function(url, response,client, connection)
+        local Router = _Router
+        -- request handler status
+        local status ---@type string|number
+        --- data sent back to the client, must be a string
+        local result ---@type string
+        status, result = Router:Handle(url, client, connection)
+        if status then
+            response = {status = (status or 100), result = (result or 'No Result'), message = getHTTPCode(status or 100)}
+            return string.expand('${response}', {response = JSON.stringify(response)})
+
+        else
+            response = {status = 500, result = getHTTPCode(500), message = 'Failed to Handle Request'}
+            return string.expand('${response}', {response = JSON.stringify(response)})
+        end
+        return response
+    end)
 end
 
 function HTTP:addRoute(method, route, cb)
@@ -132,14 +128,21 @@ local ERR_HTTP_HANDLER = function(err)
     return message
 end
 
+local function strip_paramPayload(url)
+    for urlPart in url:gmatch('(.+)%?') do
+        return urlPart
+    end
+end
+
 --- Handle HTTP Requests
 function HTTP:Handle(url, client, connection)
     local method = 'GET'
     local request = urldata(url)
     local route = (request.route .. '/' .. request.endpoint)
     local params = table.update({method = method, client = client, connection = connection}, request)
+    url = (strip_paramPayload(url) or url)
     local ok, handled, status, result = xpcall(function() return self.Router:execute(method, url, params) end, ERR_HTTP_HANDLER) --- handle errors within Router:execute()
-    if ok then if handled then return handled, status, result end end
+    if ok and handled then return status, result end
 
     return false, 'unknown error'
 end
