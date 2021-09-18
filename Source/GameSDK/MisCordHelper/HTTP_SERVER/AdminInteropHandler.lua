@@ -24,7 +24,7 @@ local AUTH_KEY = Settings['AuthKey']
 
 local VALID_LOG_TYPES = {['MisCordHelper.AdminActions'] = 'AdminActions'}
 local function match_logType(kind) for key, value in pairs(VALID_LOG_TYPES) do if (value == kind) then return key end end end
-_DEBUG = false
+_DEBUG = true
 
 HTTPServer:addRoute(
     'GET', '/server', function(request)
@@ -36,14 +36,14 @@ HTTPServer:addRoute(
             server_lifetime = tostring(ServerLifetime:stats().lifetime),
             server_uptime = tostring(ServerLifetime:stats().runtime),
         }
-        return true, response_data
+        return 200, response_data
     end
 )
 
 HTTPServer:addRoute('GET', '/adminInterop/kick-player', function(request)
     if not request.params then return false, 'Invalid params' end
     local params = request.params
-    if (not params['auth_key'] == AUTH_KEY) then
+    if (not params.auth_key) or (not params['auth_key'] == AUTH_KEY) then
         --- unauthorised
         return 401, 'Not Authorised'
     end
@@ -63,7 +63,7 @@ end)
 HTTPServer:addRoute('GET', '/adminInterop/ban-player', function(request)
     if not request.params then return false, 'Invalid params' end
     local params = request.params
-    if (not params['auth_key'] == AUTH_KEY) then
+    if (not params.auth_key) or (not params['auth_key'] == AUTH_KEY) then
         --- unauthorised
         return 401, 'Not Authorised'
     end
@@ -83,7 +83,7 @@ end)
 HTTPServer:addRoute('GET', '/adminInterop/unban-player', function(request)
     if not request.params then return false, 'Invalid params' end
     local params = request.params
-    if (not params['auth_key'] == AUTH_KEY) then
+    if (not params.auth_key) or (not params['auth_key'] == AUTH_KEY) then
         --- unauthorised
         return 401, 'Not Authorised'
     end
@@ -103,7 +103,7 @@ end)
 HTTPServer:addRoute('GET', '/adminInterop/fetch-logs/:logKind', function(request)
     if not request.params then return false, 'Invalid params' end
     local params = request.params
-    if (not params['auth_key'] == AUTH_KEY) then
+    if (not params.auth_key) or (not params['auth_key'] == AUTH_KEY) then
         --- unauthorised
         return 401, 'Not Authorised'
     end

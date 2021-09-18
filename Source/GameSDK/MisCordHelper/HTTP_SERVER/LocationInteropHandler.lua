@@ -94,7 +94,7 @@ end
 HTTPServer:addRoute('GET', '/locationInterop/locations/:kind', function(request)
     if not request.params then return false, 'Invalid params' end
     local params = request.params
-    if (not params['auth_key'] == AUTH_KEY) then
+    if (not params.auth_key) or (not params['auth_key'] == AUTH_KEY) then
         --- unauthorised
         return 401, 'Not Authorised'
     end
@@ -121,8 +121,10 @@ HTTPServer:addRoute('GET', '/locationInterop/locations/:kind', function(request)
                 end
             end
             return 200, AllTents
+        else
+            return 400, 'unknown Location Kind'
         end
     else
-        return 400, 'unknown location kind specified'
+        return 400, 'must define a location Kind'
     end
 end)
